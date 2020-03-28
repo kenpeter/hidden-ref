@@ -1,15 +1,16 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import { eventPath } from "./eventPath.js";
 
 function Menu({ index, isShowMenu, closeMenu, toggleMenu }) {
   // menu ref
   const menuRef = useRef(null);
 
-  // if really click
+  // when clicking the button, this will run then button will run, because consider click outside
   const handleClick = event => {
     //test
-    console.log("handleClick");
+    console.log("-- 3 --", "handleClick");
 
+    // null out
     if (menuRef === null || menuRef.current === null) {
       console.log("menuRef null out");
       return;
@@ -20,30 +21,36 @@ function Menu({ index, isShowMenu, closeMenu, toggleMenu }) {
 
     // click target not inside menu, close menu
     if (!menuRef.current.contains(target)) {
+      // button is clicked before, no touch
+      console.log("-- 3.1--", "close menu");
       closeMenu();
     }
   };
 
-  // listen any time
+  // * listener only adds once, no more add listener
+  // * it means handler is listening
   useEffect(() => {
     //test
-    console.log("add listener");
+    console.log("-- 2 --", "add listener");
     document.addEventListener("mousedown", handleClick);
     document.addEventListener("touchstart", handleClick);
 
     return () => {
-      // don't listen mouse down
+      //test
+      console.log("-- 2.1 --", "remove listener");
       document.removeEventListener("mousedown", handleClick);
       document.removeEventListener("touchend", handleClick);
     };
-  });
+  }, []);
 
   return (
-    <>
+    <div>
       <button
         // button click
         onClick={event => {
-          // toggle menu
+          //test
+          console.log("-- 1 -- button click");
+          // toggle index
           toggleMenu(index);
         }}
       >
@@ -54,7 +61,7 @@ function Menu({ index, isShowMenu, closeMenu, toggleMenu }) {
           menu
         </div>
       )}
-    </>
+    </div>
   );
 }
 

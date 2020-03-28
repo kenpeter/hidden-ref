@@ -21,9 +21,26 @@ function App() {
 
   // same, set not same
   const toggleMenu = index => {
+    //test
+    console.log("toggleMenu", "index", index, "currIndex", currIndex);
+
     // toggle
     if (index !== currIndex) setCurrIndex(index);
     else setCurrIndex(-1);
+  };
+
+  const shouldShowMenu = index => {
+    //test
+    console.log(
+      "shouldShowMenu",
+      "index",
+      index,
+      "currIndex",
+      currIndex,
+      "index === currIndex",
+      index === currIndex
+    );
+    return index === currIndex;
   };
 
   return (
@@ -41,7 +58,7 @@ function App() {
           >
             <Menu
               index={index}
-              isShowMenu={index === currIndex}
+              isShowMenu={shouldShowMenu(index)}
               closeMenu={closeMenu}
               toggleMenu={toggleMenu}
             />
