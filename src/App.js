@@ -1,59 +1,50 @@
-import React, { useEffect, useState, useRef } from "react";
-import { eventPath } from "./eventPath.js";
+import React, { useState } from "react";
+import Menu from "./Menu";
 
-function useClickOutside(ref, callback) {
-  const handleClick = event => {
-    const target = event.target.shadowRoot ? eventPath(event)[0] : event.target;
-
-    //test
-    console.log(
-      "ref",
-      ref,
-      "ref.current.contains(target)",
-      ref.current.contains(target)
-    );
-
-    if (!ref.current.contains(target)) {
-      callback();
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClick);
-    document.addEventListener("touchstart", handleClick);
-    return () => {
-      document.removeEventListener("mousedown", handleClick);
-      document.removeEventListener("touchend", handleClick);
-    };
-  });
-
-  return { handleClick };
-}
+const getColor = index => {
+  if (index === 0) return "blue";
+  else if (index === 1) return "green";
+  else if (index === 2) return "red";
+};
 
 function App() {
+  // items
   const items = ["item0", "item1", "item2"];
-  const menuRef = useRef(null);
-  const [isShow, setIsShow] = useState(false);
 
-  // pass set state
-  useClickOutside(menuRef, () => setIsShow(false));
+  // state: show hide
+  const [currIndex, setCurrIndex] = useState(-1);
+
+  // close menu, set index -1
+  const closeMenu = () => {
+    setCurrIndex(-1);
+  };
+
+  // same, set not same
+  const toggleMenu = index => {
+    // toggle
+    if (index !== currIndex) setCurrIndex(index);
+    else setCurrIndex(-1);
+  };
 
   return (
     <div className="App">
       {items.map((item, index) => {
+        // loop items
         return (
           <div
-            ref={menuRef}
-            style={{ backgroundColor: "#ccc", height: "100px", width: "200px" }}
+            key={index}
+            style={{
+              backgroundColor: getColor(index),
+              height: "100px",
+              width: "200px"
+            }}
           >
-            <button
-              onClick={() => {
-                setIsShow(!isShow);
-              }}
-            >
-              click
-            </button>
-            {isShow && <div>menu</div>}
+            <Menu
+              index={index}
+              isShowMenu={index === currIndex}
+              closeMenu={closeMenu}
+              toggleMenu={toggleMenu}
+            />
           </div>
         );
       })}
