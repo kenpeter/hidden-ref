@@ -1,10 +1,9 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import { eventPath } from "./eventPath.js";
 
-function Menu({ index, isShowMenu, showMenu, closeMenu, toggleMenu }) {
+function Menu({ index, isShowMenu, closeMenu, toggleMenu }) {
   // menu ref
   const menuRef = useRef(null);
-  const isButtonClickRef = useRef(false);
 
   // this run, then button click will run
   const handleClick = event => {
@@ -17,15 +16,27 @@ function Menu({ index, isShowMenu, showMenu, closeMenu, toggleMenu }) {
     }
 
     const target = event.target.shadowRoot ? eventPath(event)[0] : event.target;
+    // yes click outside
     if (!menuRef.current.contains(target)) {
-      // * click the ... button, no close menu
+      //test
+      console.log("target", target);
+      const ownButtonId = "button_" + index;
+      if (ownButtonId === target.id) {
+        // click own ... button, skip this
+      } else {
+        // or click outside or other button, close this
+        closeMenu();
+      }
+
+      /*
       if (isButtonClickRef.current) {
         console.log("-- 3.2 --", "click ... button, no close menu");
       } else {
-        // * or click outside area, this should close
+        // * or current click outside area, this should close
         console.log("-- 3.4 --", "close outside, close menu");
         closeMenu();
       }
+      */
     } else {
       // click inside
       console.log("-- 3.5 --", "click inside download button");
@@ -50,11 +61,10 @@ function Menu({ index, isShowMenu, showMenu, closeMenu, toggleMenu }) {
   return (
     <div>
       <button
+        id={"button_" + index}
         onClick={event => {
           console.log("-- 1 -- button click");
-          // * it should show menu and into outMode
           toggleMenu(index);
-          isButtonClickRef.current = true;
         }}
       >
         click to toggle

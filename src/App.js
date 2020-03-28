@@ -63,7 +63,6 @@ function App() {
             <Menu
               index={index}
               isShowMenu={shouldShowMenu(index)}
-              showMenu={showMenu}
               closeMenu={closeMenu}
               toggleMenu={toggleMenu}
             />
