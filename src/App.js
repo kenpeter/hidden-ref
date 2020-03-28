@@ -14,6 +14,10 @@ function App() {
   // state: show hide
   const [currIndex, setCurrIndex] = useState(-1);
 
+  const showMenu = index => {
+    setCurrIndex(index);
+  };
+
   // close menu, set index -1
   const closeMenu = () => {
     setCurrIndex(-1);
@@ -59,6 +63,7 @@ function App() {
             <Menu
               index={index}
               isShowMenu={shouldShowMenu(index)}
+              showMenu={showMenu}
               closeMenu={closeMenu}
               toggleMenu={toggleMenu}
             />

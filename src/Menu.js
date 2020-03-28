@@ -1,34 +1,38 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import { eventPath } from "./eventPath.js";
 
-function Menu({ index, isShowMenu, closeMenu, toggleMenu }) {
+function Menu({ index, isShowMenu, showMenu, closeMenu, toggleMenu }) {
   // menu ref
   const menuRef = useRef(null);
+  const isButtonClickRef = useRef(false);
 
-  // when clicking the button, this will run then button will run, because consider click outside
+  // this run, then button click will run
   const handleClick = event => {
-    //test
-    console.log("-- 3 --", "handleClick");
+    console.log("-- 3 --", "handleClick index: ", index);
 
-    // null out
-    if (menuRef === null || menuRef.current === null) {
-      console.log("menuRef null out");
+    if (menuRef.current === null) {
+      // * the menu won't appear, so ref is null, until click the button
+      console.log("-- 3.1 --", "menuRef is null, no more checking in or out");
       return;
     }
 
-    // find click target
     const target = event.target.shadowRoot ? eventPath(event)[0] : event.target;
-
-    // click target not inside menu, close menu
     if (!menuRef.current.contains(target)) {
-      // button is clicked before, no touch
-      console.log("-- 3.1--", "close menu");
-      closeMenu();
+      // * click the ... button, no close menu
+      if (isButtonClickRef.current) {
+        console.log("-- 3.2 --", "click ... button, no close menu");
+      } else {
+        // * or click outside area, this should close
+        console.log("-- 3.4 --", "close outside, close menu");
+        closeMenu();
+      }
+    } else {
+      // click inside
+      console.log("-- 3.5 --", "click inside download button");
     }
   };
 
-  // * listener only adds once, no more add listener
-  // * it means handler is listening
+  // listener added at page load
   useEffect(() => {
     //test
     console.log("-- 2 --", "add listener");
@@ -37,21 +41,20 @@ function Menu({ index, isShowMenu, closeMenu, toggleMenu }) {
 
     return () => {
       //test
-      console.log("-- 2.1 --", "remove listener");
+      console.log("-- 2.1 --", "unmount, remove listener");
       document.removeEventListener("mousedown", handleClick);
       document.removeEventListener("touchend", handleClick);
     };
-  }, []);
+  });
 
   return (
     <div>
       <button
-        // button click
         onClick={event => {
-          //test
           console.log("-- 1 -- button click");
-          // toggle index
+          // * it should show menu and into outMode
           toggleMenu(index);
+          isButtonClickRef.current = true;
         }}
       >
         click to toggle
