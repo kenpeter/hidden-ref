@@ -14,10 +14,6 @@ function App() {
   // state: show hide
   const [currIndex, setCurrIndex] = useState(-1);
 
-  const showMenu = index => {
-    setCurrIndex(index);
-  };
-
   // close menu, set index -1
   const closeMenu = () => {
     setCurrIndex(-1);
@@ -25,25 +21,12 @@ function App() {
 
   // same, set not same
   const toggleMenu = index => {
-    //test
-    console.log("toggleMenu", "index", index, "currIndex", currIndex);
-
     // toggle
     if (index !== currIndex) setCurrIndex(index);
     else setCurrIndex(-1);
   };
 
   const shouldShowMenu = index => {
-    //test
-    console.log(
-      "shouldShowMenu",
-      "index",
-      index,
-      "currIndex",
-      currIndex,
-      "index === currIndex",
-      index === currIndex
-    );
     return index === currIndex;
   };
 
