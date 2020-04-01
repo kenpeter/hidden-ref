@@ -27,16 +27,6 @@ function Menu({ index, isShowMenu, closeMenu, toggleMenu }) {
         // or click outside or other button, close this
         closeMenu();
       }
-
-      /*
-      if (isButtonClickRef.current) {
-        console.log("-- 3.2 --", "click ... button, no close menu");
-      } else {
-        // * or current click outside area, this should close
-        console.log("-- 3.4 --", "close outside, close menu");
-        closeMenu();
-      }
-      */
     } else {
       // click inside
       console.log("-- 3.5 --", "click inside download button");
@@ -61,8 +51,10 @@ function Menu({ index, isShowMenu, closeMenu, toggleMenu }) {
   return (
     <div>
       <button
+        // id
         id={"button_" + index}
         onClick={event => {
+          // toggle
           console.log("-- 1 -- button click");
           toggleMenu(index);
         }}
@@ -70,9 +62,12 @@ function Menu({ index, isShowMenu, closeMenu, toggleMenu }) {
         click to toggle
       </button>
       {isShowMenu && (
-        <div ref={menuRef} style={{ backgroundColor: "white" }}>
-          menu
-        </div>
+        // ref to menu
+        <ul ref={menuRef} style={{ backgroundColor: "#fcad03" }}>
+          <li>
+            <div>menu item 0</div>
+          </li>
+        </ul>
       )}
     </div>
   );
